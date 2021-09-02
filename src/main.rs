@@ -48,8 +48,11 @@ fn app() -> Template<G> {
             };
             template! {
                 div(class="app") {
-                    components::header::Header()
-                    div(class="container mx-auto") { (t) }
+                    div(class="container mx-auto") {
+                        components::header::Header()
+                        (t)
+                    }
+                    components::footer::Footer()
                 }
             }
         }))
