@@ -11,21 +11,8 @@ pub enum StorySorting {
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StoryPageData {
-    pub id: i64,
-    pub title: String,
-    pub url: Option<String>,
-    pub text: Option<String>,
-    #[serde(default)]
-    pub by: String,
-    #[serde(default)]
-    pub score: i64,
-    #[serde(default)]
-    pub descendants: i64,
-    #[serde(with = "chrono::serde::ts_seconds")]
-    pub time: DateTime<Utc>,
-    #[serde(default)]
-    pub kids: Vec<i64>,
-    pub r#type: String,
+    #[serde(flatten)]
+    pub item: StoryItem,
     #[serde(default)]
     pub comments: Vec<Comment>,
 }

@@ -16,7 +16,7 @@ pub fn user(props: Result<UserData>) -> Template<G> {
                 stories,
             } = user;
             template! {
-                h1(class="text-xl font-semibold") { (id) }
+                h1(class="text-xl font-semibold") { "User: " (id) }
                 p(class="text-sm text-gray-600") { (karma) " karma" }
                 p(class="mb-2") { (about) }
                 ShowStories(stories)

@@ -51,7 +51,7 @@ pub async fn get_story(id: i64) -> Result<StoryPageData> {
         .await?
         .json::<StoryPageData>()
         .await?;
-    let comment_futures = story.kids.iter().map(|&id| get_comment(id));
+    let comment_futures = story.item.kids.iter().map(|&id| get_comment(id));
     let comments = join_all(comment_futures)
         .await
         .into_iter()

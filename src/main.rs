@@ -3,7 +3,7 @@ mod components;
 mod pages;
 
 use anyhow::Result;
-use apis::types::{StoryItem, StorySorting, UserData};
+use apis::types::{StoryItem, StoryPageData, StorySorting, UserData};
 use sycamore::prelude::*;
 use sycamore_router::{HistoryIntegration, Route, Router, RouterProps};
 
@@ -26,6 +26,12 @@ enum AppRoutes {
     User {
         username: String,
         data: Result<UserData>,
+    },
+    #[to("/item/<id>")]
+    #[preload(|params: Vec<String>| async move { apis::get_story(params[1].parse().unwrap()).await })]
+    Item {
+        id: i64,
+        data: Result<StoryPageData>,
     },
     #[not_found]
     NotFound,
@@ -51,17 +57,19 @@ fn app() -> Template<G> {
                 AppRoutes::User { username: _, data } => template! {
                     pages::user::User(data)
                 },
+                AppRoutes::Item { id: _, data } => template! {
+                    pages::item::Item(data)
+                },
                 AppRoutes::NotFound => template! {
                     "Page not found."
                 },
             };
             template! {
                 div(class="app") {
+                    components::header::Header()
                     div(class="container mx-auto") {
-                        components::header::Header()
                         (t)
                     }
-                    components::footer::Footer()
                 }
             }
         }))

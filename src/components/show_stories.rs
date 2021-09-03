@@ -19,7 +19,7 @@ pub fn story(story: StoryItem) -> Template<G> {
 
     // TODO: user view in app
     let by_url = format!("/user/{}", by);
-    let kids_url = format!("https://news.ycombinator.com/item?id={}", id);
+    let kids_url = format!("/item/{}", id);
     let kids_len = kids.len();
 
     template! {
