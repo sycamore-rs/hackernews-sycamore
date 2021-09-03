@@ -37,6 +37,8 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
+      - run: npm ci
+
       - name: Build
         run: trunk build --release --public-url /hackernews-sycamore/
 
