@@ -3,24 +3,30 @@ mod components;
 mod pages;
 
 use anyhow::Result;
-use apis::types::StoryItem;
+use apis::types::{StoryItem, StorySorting, UserData};
 use sycamore::prelude::*;
 use sycamore_router::{HistoryIntegration, Route, Router, RouterProps};
 
 #[derive(Debug, Route)]
 enum AppRoutes {
     #[to("/")]
-    #[preload(|_| apis::get_stories(apis::types::StorySorting::Top))]
+    #[preload(|_| apis::get_stories(StorySorting::Top))]
     Top { data: Result<Vec<StoryItem>> },
     #[to("/new")]
-    #[preload(|_| apis::get_stories(apis::types::StorySorting::New))]
+    #[preload(|_| apis::get_stories(StorySorting::New))]
     New { data: Result<Vec<StoryItem>> },
     #[to("/best")]
-    #[preload(|_| apis::get_stories(apis::types::StorySorting::Best))]
+    #[preload(|_| apis::get_stories(StorySorting::Best))]
     Best { data: Result<Vec<StoryItem>> },
     #[to("/show")]
-    #[preload(|_| apis::get_stories(apis::types::StorySorting::Show))]
+    #[preload(|_| apis::get_stories(StorySorting::Show))]
     Show { data: Result<Vec<StoryItem>> },
+    #[to("/user/<username>")]
+    #[preload(|params: Vec<String>| async move { apis::get_user_page(&params[1]).await })]
+    User {
+        username: String,
+        data: Result<UserData>,
+    },
     #[not_found]
     NotFound,
 }
@@ -41,6 +47,9 @@ fn app() -> Template<G> {
                 },
                 AppRoutes::Show { data } => template! {
                     pages::stories::Stories(data)
+                },
+                AppRoutes::User { username: _, data } => template! {
+                    pages::user::User(data)
                 },
                 AppRoutes::NotFound => template! {
                     "Page not found."

@@ -1,4 +1,3 @@
-use anyhow::Result;
 use sycamore::prelude::*;
 
 use crate::apis::types::StoryItem;
@@ -9,22 +8,22 @@ pub fn story(story: StoryItem) -> Template<G> {
         id,
         title,
         url,
-        text,
+        text: _,
         by,
         score,
-        descendants,
+        descendants: _,
         time,
         kids,
-        r#type,
+        r#type: _,
     } = story;
 
     // TODO: user view in app
-    let by_url = format!("https://news.ycombinator.com/user?id={}", by);
+    let by_url = format!("/user/{}", by);
     let kids_url = format!("https://news.ycombinator.com/item?id={}", id);
     let kids_len = kids.len();
 
     template! {
-        li(class="rounded border border-gray-300 p-2") {
+        li(class="rounded border border-gray-300 p-1") {
             div {
                 a(href=url.as_deref().unwrap_or_default(), target="_blank", rel="noreferrer") { (title) }
             }
@@ -47,29 +46,20 @@ pub fn story(story: StoryItem) -> Template<G> {
 }
 
 #[component(ShowStories<G>)]
-pub fn show_stories(stories: Result<Vec<StoryItem>>) -> Template<G> {
-    match stories {
-        Ok(stories) => {
-            let list = Template::new_fragment(
-                stories
-                    .into_iter()
-                    .map(|item| {
-                        template! {
-                            Story(item)
-                        }
-                    })
-                    .collect(),
-            );
-            template! {
-                ul(class="list-none space-y-2") {
-                    (list)
+pub fn show_stories(stories: Vec<StoryItem>) -> Template<G> {
+    let list = Template::new_fragment(
+        stories
+            .into_iter()
+            .map(|item| {
+                template! {
+                    Story(item)
                 }
-            }
-        }
-        _ => {
-            template! {
-                "Error fetching stories."
-            }
+            })
+            .collect(),
+    );
+    template! {
+        ul(class="list-none space-y-2") {
+            (list)
         }
     }
 }

@@ -7,6 +7,7 @@ edition = "2018"
 
 [dependencies]
 anyhow = "1.0.43"
+async-recursion = "0.3.2"
 chrono = { version = "0.4.19", features = ["serde", "wasmbind"] }
 console_error_panic_hook = "0.1.6"
 console_log = "0.2.0"

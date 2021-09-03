@@ -6,7 +6,12 @@ use crate::components::show_stories::ShowStories;
 
 #[component(Stories<G>)]
 pub fn stories(props: Result<Vec<StoryItem>>) -> Template<G> {
-    template! {
-        ShowStories(props)
+    match props {
+        Ok(stories) => template! {
+            ShowStories(stories)
+        },
+        Err(_) => template! {
+            "Error fetching stories."
+        },
     }
 }

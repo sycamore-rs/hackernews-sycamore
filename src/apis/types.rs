@@ -65,3 +65,15 @@ pub struct StoryItem {
     pub kids: Vec<i64>,
     pub r#type: String,
 }
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct UserData {
+    pub id: String,
+    pub karma: i64,
+    #[serde(default)]
+    pub about: String,
+    #[serde(default)]
+    pub submitted: Vec<i64>,
+    #[serde(default)]
+    pub stories: Vec<StoryItem>,
+}
