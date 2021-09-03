@@ -65,7 +65,7 @@ fn app() -> Template<G> {
                 },
             };
             template! {
-                div(class="app") {
+                div(class="app mb-2") {
                     components::header::Header()
                     div(class="container mx-auto") {
                         (t)

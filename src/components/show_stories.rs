@@ -1,4 +1,5 @@
 use sycamore::prelude::*;
+use web_sys::Url;
 
 use crate::apis::types::StoryItem;
 
@@ -16,6 +17,15 @@ pub fn story(story: StoryItem) -> Template<G> {
         kids,
         r#type: _,
     } = story;
+    let hostname = Url::new(url.as_deref().unwrap_or_default())
+        .map(|url| {
+            let mut hostname = url.hostname();
+            if hostname.starts_with("www.") {
+                hostname = hostname[4..].to_string();
+            }
+            hostname
+        })
+        .ok();
 
     // TODO: user view in app
     let by_url = format!("/user/{}", by);
@@ -25,7 +35,14 @@ pub fn story(story: StoryItem) -> Template<G> {
     template! {
         li(class="rounded border border-gray-300 p-1") {
             div {
-                a(href=url.as_deref().unwrap_or_default(), target="_blank", rel="noreferrer") { (title) }
+                a(href=url.as_deref().unwrap_or_default(), target="_blank", rel="noreferrer", class="font-semibold") {
+                    (title)
+                }
+                (if let Some(hostname) = hostname.clone() {
+                    template! { span(class="text-gray-600 text-sm") { " (" (hostname) ")" } }
+                } else {
+                    template! {}
+                })
             }
             div(class="text-sm text-gray-600") {
                 span {

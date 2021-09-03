@@ -5,13 +5,13 @@ use crate::apis::types::Comment;
 #[component(CommentView<G>)]
 pub fn comment_view(comment: Comment) -> Template<G> {
     let Comment {
-        id,
+        id: _,
         by,
         text,
         time,
-        kids,
+        kids: _,
         sub_comments,
-        r#type,
+        r#type: _,
     } = comment;
 
     let by_url = format!("/user/{}", by);
