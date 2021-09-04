@@ -14,7 +14,7 @@ pub fn comment_view(comment: Comment) -> Template<G> {
         r#type: _,
     } = comment;
 
-    let by_url = format!("/user/{}", by);
+    let by_url = format!("user/{}", by);
 
     let sub_comments_view = Template::new_fragment(
         sub_comments

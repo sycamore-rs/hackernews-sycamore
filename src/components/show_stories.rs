@@ -28,8 +28,8 @@ pub fn story(story: StoryItem) -> Template<G> {
         .ok();
 
     // TODO: user view in app
-    let by_url = format!("/user/{}", by);
-    let kids_url = format!("/item/{}", id);
+    let by_url = format!("user/{}", by);
+    let kids_url = format!("item/{}", id);
     let kids_len = kids.len();
 
     template! {

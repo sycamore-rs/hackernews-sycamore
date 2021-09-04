@@ -17,10 +17,10 @@ pub fn header() -> Template<G> {
     template! {
         div(class="bg-green-400 mb-3") {
             nav(class="container flex flex-row space-x-4 mx-auto py-4") {
-                NavLink(("/", "HN"))
-                NavLink(("/new", "Latest"))
-                NavLink(("/best", "Best"))
-                NavLink(("/show", "Show"))
+                NavLink(("", "HN"))
+                NavLink(("new", "Latest"))
+                NavLink(("best", "Best"))
+                NavLink(("show", "Show"))
                 div(class="flex-1") // spacer
                 a(href="https://sycamore-rs.netlify.app", target="_blank", class="font-light text-gray-200") {
                     "Built with Sycamore"
