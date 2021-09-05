@@ -487,7 +487,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "sycamore"
 version = "0.5.2"
-source = "git+https://github.com/sycamore-rs/sycamore?rev=28341d6#28341d67f5059aea147c1e1ead156784bbabbca3"
+source = "git+https://github.com/sycamore-rs/sycamore?rev=0e13c5a#0e13c5a583a6e0628d587ff2273e0134b0336778"
 dependencies = [
  "ahash",
  "chrono",
@@ -503,7 +503,7 @@ dependencies = [
 [[package]]
 name = "sycamore-macro"
 version = "0.5.2"
-source = "git+https://github.com/sycamore-rs/sycamore?rev=28341d6#28341d67f5059aea147c1e1ead156784bbabbca3"
+source = "git+https://github.com/sycamore-rs/sycamore?rev=0e13c5a#0e13c5a583a6e0628d587ff2273e0134b0336778"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -513,7 +513,7 @@ dependencies = [
 [[package]]
 name = "sycamore-reactive"
 version = "0.5.2"
-source = "git+https://github.com/sycamore-rs/sycamore?rev=28341d6#28341d67f5059aea147c1e1ead156784bbabbca3"
+source = "git+https://github.com/sycamore-rs/sycamore?rev=0e13c5a#0e13c5a583a6e0628d587ff2273e0134b0336778"
 dependencies = [
  "ahash",
  "indexmap",
@@ -524,7 +524,7 @@ dependencies = [
 [[package]]
 name = "sycamore-router"
 version = "0.5.2"
-source = "git+https://github.com/sycamore-rs/sycamore?rev=28341d6#28341d67f5059aea147c1e1ead156784bbabbca3"
+source = "git+https://github.com/sycamore-rs/sycamore?rev=0e13c5a#0e13c5a583a6e0628d587ff2273e0134b0336778"
 dependencies = [
  "async-trait",
  "sycamore",
@@ -537,7 +537,7 @@ dependencies = [
 [[package]]
 name = "sycamore-router-macro"
 version = "0.5.2"
-source = "git+https://github.com/sycamore-rs/sycamore?rev=28341d6#28341d67f5059aea147c1e1ead156784bbabbca3"
+source = "git+https://github.com/sycamore-rs/sycamore?rev=0e13c5a#0e13c5a583a6e0628d587ff2273e0134b0336778"
 dependencies = [
  "nom",
  "proc-macro2",
