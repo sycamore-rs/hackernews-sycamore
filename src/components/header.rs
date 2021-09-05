@@ -22,7 +22,7 @@ pub fn header() -> Template<G> {
                 NavLink(("best", "Best"))
                 NavLink(("show", "Show"))
                 div(class="flex-1") // spacer
-                a(href="https://sycamore-rs.netlify.app", target="_blank", class="font-light text-gray-200") {
+                a(href="https://sycamore-rs.netlify.app", target="_blank", class="font-light text-white") {
                     "Built with Sycamore"
                 }
             }
