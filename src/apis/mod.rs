@@ -71,13 +71,11 @@ pub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<Comment> {
             .kids
             .iter()
             .map(|story_id| get_comment_with_depth(*story_id, depth - 1));
-        let sub_comments = join_all(sub_comments_futures)
+        comment.sub_comments = join_all(sub_comments_futures)
             .await
             .into_iter()
             .filter_map(|c| c.ok())
             .collect();
-
-        comment.sub_comments = sub_comments;
     }
     Ok(comment)
 }
@@ -96,13 +94,11 @@ pub async fn get_user_page(user_id: &str) -> Result<UserData> {
         .iter()
         .map(|&story_id| get_story_preview(story_id));
 
-    let stories = join_all(story_futures)
+    user.stories = join_all(story_futures)
         .await
         .into_iter()
         .filter_map(|story| story.ok())
         .collect();
-
-    user.stories = stories;
 
     Ok(user)
 }
