@@ -2,37 +2,25 @@ mod apis;
 mod components;
 mod pages;
 
-use anyhow::Result;
-use apis::types::{StoryItem, StoryPageData, StorySorting, UserData};
+use apis::types::StorySorting;
 use sycamore::prelude::*;
 use sycamore_router::{HistoryIntegration, Route, Router, RouterProps};
+use wasm_bindgen_futures::spawn_local;
 
 #[derive(Debug, Route)]
 enum AppRoutes {
     #[to("/")]
-    #[preload(|_| apis::get_stories(StorySorting::Top))]
-    Top { data: Result<Vec<StoryItem>> },
+    Top,
     #[to("/new")]
-    #[preload(|_| apis::get_stories(StorySorting::New))]
-    New { data: Result<Vec<StoryItem>> },
+    New,
     #[to("/best")]
-    #[preload(|_| apis::get_stories(StorySorting::Best))]
-    Best { data: Result<Vec<StoryItem>> },
+    Best,
     #[to("/show")]
-    #[preload(|_| apis::get_stories(StorySorting::Show))]
-    Show { data: Result<Vec<StoryItem>> },
+    Show,
     #[to("/user/<username>")]
-    #[preload(|params: Vec<String>| async move { apis::get_user_page(&params[1]).await })]
-    User {
-        username: String,
-        data: Result<UserData>,
-    },
+    User(String),
     #[to("/item/<id>")]
-    #[preload(|params: Vec<String>| async move { apis::get_story(params[1].parse().unwrap()).await })]
-    Item {
-        id: i64,
-        data: Result<StoryPageData>,
-    },
+    Item(i64),
     #[not_found]
     NotFound,
 }
@@ -40,35 +28,61 @@ enum AppRoutes {
 #[component(App<G>)]
 fn app() -> Template<G> {
     template! {
-        Router(RouterProps::new(HistoryIntegration::new(), |route: AppRoutes| {
-            let t = match route {
-                AppRoutes::Top { data } => template! {
-                    pages::stories::Stories(data)
-                },
-                AppRoutes::New { data } => template! {
-                    pages::stories::Stories(data)
-                },
-                AppRoutes::Best { data } => template! {
-                    pages::stories::Stories(data)
-                },
-                AppRoutes::Show { data } => template! {
-                    pages::stories::Stories(data)
-                },
-                AppRoutes::User { username: _, data } => template! {
-                    pages::user::User(data)
-                },
-                AppRoutes::Item { id: _, data } => template! {
-                    pages::item::Item(data)
-                },
-                AppRoutes::NotFound => template! {
-                    "Page not found."
-                },
-            };
+        Router(RouterProps::new(HistoryIntegration::new(), |route: StateHandle<AppRoutes>| {
+            let template = Signal::new(Template::empty());
+            create_effect(cloned!((template) => move || {
+                let route = route.get();
+                spawn_local(cloned!((template) => async move {
+                    let t = match route.as_ref() {
+                        AppRoutes::Top  => {
+                            let data = apis::get_stories(StorySorting::Top).await;
+                            template! {
+                                pages::stories::Stories(data)
+                            }
+                        },
+                        AppRoutes::New  => {
+                            let data = apis::get_stories(StorySorting::New).await;
+                            template! {
+                                pages::stories::Stories(data)
+                            }
+                        },
+                        AppRoutes::Best  => {
+                            let data = apis::get_stories(StorySorting::Best).await;
+                            template! {
+                                pages::stories::Stories(data)
+                            }
+                        },
+                        AppRoutes::Show => {
+                            let data = apis::get_stories(StorySorting::Show).await;
+                            template! {
+                                pages::stories::Stories(data)
+                            }
+                        },
+                        AppRoutes::User(username) => {
+                            let data = apis::get_user_page(&username).await;
+                            template! {
+                                pages::user::User(data)
+                            }
+                        },
+                        AppRoutes::Item(id) => {
+                            let data = apis::get_story(*id).await ;
+                            template! {
+                                pages::item::Item(data)
+                            }
+                        },
+                        AppRoutes::NotFound => template! {
+                            "Page not found."
+                        },
+                    };
+                    template.set(t);
+                }));
+            }));
+
             template! {
                 div(class="app mb-2") {
                     components::header::Header()
                     div(class="container mx-auto") {
-                        (t)
+                        (template.get().as_ref())
                     }
                 }
             }

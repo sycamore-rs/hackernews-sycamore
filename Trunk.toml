@@ -2,7 +2,7 @@
 stage = "build"
 command = "node"
 command_arguments = [
-    "node_modules/tailwindcss-cli",
+    "node_modules/.bin/tailwindcss",
     "build",
     "-i",
     "src/tailwind.css",

@@ -1,7 +1,7 @@
 {
-  "name": "hackernews-sycamore",
+  "name": "bemx-web",
   "version": "1.0.0",
-  "dependencies": {
-    "tailwindcss-cli": "^0.1.2"
+  "devDependencies": {
+    "tailwindcss": "^2.1.4"
   }
 }
