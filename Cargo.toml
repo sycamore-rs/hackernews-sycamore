@@ -9,16 +9,14 @@ edition = "2018"
 anyhow = "1.0.43"
 async-recursion = "0.3.2"
 chrono = { version = "0.4.19", features = ["serde", "wasmbind"] }
-console_error_panic_hook = "0.1.6"
+console_error_panic_hook = "0.1.7"
 console_log = "0.2.0"
 futures = "0.3.17"
 #log = "0.4.14"
 reqwasm = "0.2.1"
-reqwest = { version = "0.11", features = ["json"] }
 serde = { version = "1.0.130", features = ["derive"] }
-serde_json = "1.0"
+serde_json = "1.0.68"
 sycamore = { version = "0.6.3"  }
 sycamore-router = { version = "0.6.3" }
 web-sys = { version = "0.3.55", features = ["Url"] }
-# wasm-bindgen = "0.2.78"
 wasm-bindgen-futures = "0.4.28"
