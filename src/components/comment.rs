@@ -3,7 +3,7 @@ use sycamore::prelude::*;
 use crate::apis::types::Comment;
 
 #[component(CommentView<G>)]
-pub fn comment_view(comment: Comment) -> Template<G> {
+pub fn comment_view(comment: Comment) -> View<G> {
     let Comment {
         id: _,
         by,
@@ -16,18 +16,18 @@ pub fn comment_view(comment: Comment) -> Template<G> {
 
     let by_url = format!("user/{}", by);
 
-    let sub_comments_view = Template::new_fragment(
+    let sub_comments_view = View::new_fragment(
         sub_comments
             .into_iter()
             .map(|comment| {
-                template! {
+                view! {
                     CommentView(comment)
                 }
             })
             .collect(),
     );
 
-    template! {
+    view! {
         li(class="mt-2") {
             div(class="mb-2 text-gray-600 border-t border-gray-300") {
                 a(href=by_url) { (by) } " | " span { (time.format("%D %l:%M %p")) }

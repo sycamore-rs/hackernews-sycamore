@@ -1,8 +1,8 @@
 use sycamore::prelude::*;
 
 #[component(NavLink<G>)]
-pub fn nav_link((href, title): (&'static str, &'static str)) -> Template<G> {
-    template! {
+pub fn nav_link((href, title): (&'static str, &'static str)) -> View<G> {
+    view! {
         a(
             class="text-center font-bold text-gray-200 hover:text-gray-100 transition",
             href=href,
@@ -13,8 +13,8 @@ pub fn nav_link((href, title): (&'static str, &'static str)) -> Template<G> {
 }
 
 #[component(Header<G>)]
-pub fn header() -> Template<G> {
-    template! {
+pub fn header() -> View<G> {
+    view! {
         div(class="bg-green-400 mb-3") {
             nav(class="container flex flex-row space-x-4 mx-auto py-4") {
                 NavLink(("", "HN"))

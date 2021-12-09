@@ -6,23 +6,23 @@ use crate::components::comment::CommentView;
 use crate::components::show_stories::Story;
 
 #[component(Item<G>)]
-pub fn item(props: Result<StoryPageData>) -> Template<G> {
+pub fn item(props: Result<StoryPageData>) -> View<G> {
     match props {
         Ok(story) => {
             let StoryPageData { item, comments } = story;
 
             let has_comments = !comments.is_empty();
-            let comments_view = Template::new_fragment(
+            let comments_view = View::new_fragment(
                 comments
                     .into_iter()
                     .map(|comment| {
-                        template! {
+                        view! {
                             CommentView(comment)
                         }
                     })
                     .collect(),
             );
-            template! {
+            view! {
                 ul(class="list-none mb-2") {
                     Story(item)
                 }
@@ -30,12 +30,12 @@ pub fn item(props: Result<StoryPageData>) -> Template<G> {
                     (if has_comments {
                         comments_view.clone()
                     } else {
-                        template! { "No comments yet." }
+                        view! { "No comments yet." }
                     })
                 }
             }
         }
-        Err(_) => template! {
+        Err(_) => view! {
             "Error fetching item."
         },
     }

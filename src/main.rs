@@ -26,51 +26,51 @@ enum AppRoutes {
 }
 
 #[component(App<G>)]
-fn app() -> Template<G> {
-    template! {
-        Router(RouterProps::new(HistoryIntegration::new(), |route: StateHandle<AppRoutes>| {
-            let template = Signal::new(Template::empty());
+fn app() -> View<G> {
+    view! {
+        Router(RouterProps::new(HistoryIntegration::new(), |route: ReadSignal<AppRoutes>| {
+            let template = Signal::new(View::empty());
             create_effect(cloned!((template) => move || {
                 let route = route.get();
                 spawn_local(cloned!((template) => async move {
                     let t = match route.as_ref() {
                         AppRoutes::Top  => {
                             let data = apis::get_stories(StorySorting::Top).await;
-                            template! {
+                            view! {
                                 pages::stories::Stories(data)
                             }
                         },
                         AppRoutes::New  => {
                             let data = apis::get_stories(StorySorting::New).await;
-                            template! {
+                            view! {
                                 pages::stories::Stories(data)
                             }
                         },
                         AppRoutes::Best  => {
                             let data = apis::get_stories(StorySorting::Best).await;
-                            template! {
+                            view! {
                                 pages::stories::Stories(data)
                             }
                         },
                         AppRoutes::Show => {
                             let data = apis::get_stories(StorySorting::Show).await;
-                            template! {
+                            view! {
                                 pages::stories::Stories(data)
                             }
                         },
                         AppRoutes::User(username) => {
                             let data = apis::get_user_page(&username).await;
-                            template! {
+                            view! {
                                 pages::user::User(data)
                             }
                         },
                         AppRoutes::Item(id) => {
                             let data = apis::get_story(*id).await ;
-                            template! {
+                            view! {
                                 pages::item::Item(data)
                             }
                         },
-                        AppRoutes::NotFound => template! {
+                        AppRoutes::NotFound => view! {
                             "Page not found."
                         },
                     };
@@ -78,7 +78,7 @@ fn app() -> Template<G> {
                 }));
             }));
 
-            template! {
+            view! {
                 div(class="app mb-2") {
                     components::header::Header()
                     div(class="container mx-auto") {
@@ -97,7 +97,7 @@ fn main() {
     console_log::init().expect("error initializing logger");
 
     sycamore::render(|| {
-        template! {
+        view! {
             App()
         }
     });

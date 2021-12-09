@@ -4,7 +4,7 @@ use web_sys::Url;
 use crate::apis::types::StoryItem;
 
 #[component(Story<G>)]
-pub fn story(story: StoryItem) -> Template<G> {
+pub fn story(story: StoryItem) -> View<G> {
     let StoryItem {
         id,
         title,
@@ -32,16 +32,16 @@ pub fn story(story: StoryItem) -> Template<G> {
     let kids_url = format!("item/{}", id);
     let kids_len = kids.len();
 
-    template! {
+    view! {
         li(class="rounded border border-gray-300 p-1") {
             div {
                 a(href=url.as_deref().unwrap_or_default(), target="_blank", rel="noreferrer", class="font-semibold") {
                     (title)
                 }
                 (if let Some(hostname) = hostname.clone() {
-                    template! { span(class="text-gray-600 text-sm") { " (" (hostname) ")" } }
+                    view! { span(class="text-gray-600 text-sm") { " (" (hostname) ")" } }
                 } else {
-                    template! {}
+                    view! {}
                 })
             }
             div(class="text-sm text-gray-600") {
@@ -63,18 +63,18 @@ pub fn story(story: StoryItem) -> Template<G> {
 }
 
 #[component(ShowStories<G>)]
-pub fn show_stories(stories: Vec<StoryItem>) -> Template<G> {
-    let list = Template::new_fragment(
+pub fn show_stories(stories: Vec<StoryItem>) -> View<G> {
+    let list = View::new_fragment(
         stories
             .into_iter()
             .map(|item| {
-                template! {
+                view! {
                     Story(item)
                 }
             })
             .collect(),
     );
-    template! {
+    view! {
         ul(class="list-none space-y-2") {
             (list)
         }
