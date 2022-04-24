@@ -6,17 +6,17 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.43"
-async-recursion = "0.3.2"
+anyhow = "1.0.57"
+async-recursion = "1.0.0"
 chrono = { version = "0.4.19", features = ["serde", "wasmbind"] }
 console_error_panic_hook = "0.1.7"
 console_log = "0.2.0"
-futures = "0.3.17"
-log = "0.4.14"
-reqwasm = "0.3.1"
-serde = { version = "1.0.130", features = ["derive"] }
-serde_json = "1.0.68"
-sycamore = "0.7.0"
-sycamore-router = "0.7.0"
-web-sys = { version = "0.3.55", features = ["Url"] }
-wasm-bindgen-futures = "0.4.28"
+futures = "0.3.21"
+log = "0.4.16"
+reqwasm = "0.5.0"
+serde = { version = "1.0.136", features = ["derive"] }
+serde_json = "1.0.79"
+sycamore = "0.7.1"
+sycamore-router = "0.7.1"
+web-sys = { version = "0.3.57", features = ["Url"] }
+wasm-bindgen-futures = "0.4.30"
