@@ -3,7 +3,7 @@ pub mod types;
 use anyhow::Result;
 use async_recursion::async_recursion;
 use futures::future::join_all;
-use reqwasm::http::Request;
+use gloo_net::http::Request;
 use types::*;
 
 /// Hacker News API url.

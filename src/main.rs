@@ -2,77 +2,57 @@ mod apis;
 mod components;
 mod pages;
 
-use anyhow::Result;
-use apis::types::{StoryItem, StoryPageData, StorySorting, UserData};
+use apis::types::StorySorting;
 use sycamore::prelude::*;
-use sycamore_router::{HistoryIntegration, Route, Router, RouterProps};
+use sycamore_router::{HistoryIntegration, Route, Router};
 
 #[derive(Debug, Route)]
 enum AppRoutes {
     #[to("/")]
-    #[preload(|_| apis::get_stories(StorySorting::Top))]
-    Top { data: Result<Vec<StoryItem>> },
+    Top,
     #[to("/new")]
-    #[preload(|_| apis::get_stories(StorySorting::New))]
-    New { data: Result<Vec<StoryItem>> },
+    New,
     #[to("/best")]
-    #[preload(|_| apis::get_stories(StorySorting::Best))]
-    Best { data: Result<Vec<StoryItem>> },
+    Best,
     #[to("/show")]
-    #[preload(|_| apis::get_stories(StorySorting::Show))]
-    Show { data: Result<Vec<StoryItem>> },
+    Show,
     #[to("/user/<username>")]
-    #[preload(|params: Vec<String>| async move { apis::get_user_page(&params[1]).await })]
-    User {
-        username: String,
-        data: Result<UserData>,
-    },
+    User { username: String },
     #[to("/item/<id>")]
-    #[preload(|params: Vec<String>| async move { apis::get_story(params[1].parse().unwrap()).await })]
-    Item {
-        id: i64,
-        data: Result<StoryPageData>,
-    },
+    Item { id: i64 },
     #[not_found]
     NotFound,
 }
 
-#[component(App<G>)]
-fn app() -> Template<G> {
-    template! {
-        Router(RouterProps::new(HistoryIntegration::new(), |route: AppRoutes| {
-            let t = match route {
-                AppRoutes::Top { data } => template! {
-                    pages::stories::Stories(data)
-                },
-                AppRoutes::New { data } => template! {
-                    pages::stories::Stories(data)
-                },
-                AppRoutes::Best { data } => template! {
-                    pages::stories::Stories(data)
-                },
-                AppRoutes::Show { data } => template! {
-                    pages::stories::Stories(data)
-                },
-                AppRoutes::User { username: _, data } => template! {
-                    pages::user::User(data)
-                },
-                AppRoutes::Item { id: _, data } => template! {
-                    pages::item::Item(data)
-                },
-                AppRoutes::NotFound => template! {
-                    "Page not found."
-                },
-            };
-            template! {
+#[component(inline_props)]
+async fn Switch<'a, G: Html>(cx: Scope<'a>, route: &'a ReadSignal<AppRoutes>) -> View<G> {
+    view! { cx,
+        (match route.get().as_ref() {
+            AppRoutes::Top => view! { cx, pages::stories::Stories(sorting=StorySorting::Top) },
+            AppRoutes::New => view! { cx, pages::stories::Stories(sorting=StorySorting::New) },
+            AppRoutes::Best => view! { cx, pages::stories::Stories(sorting=StorySorting::Best) },
+            AppRoutes::Show => view! { cx, pages::stories::Stories(sorting=StorySorting::Show) },
+            AppRoutes::User { username } => view! { cx, pages::user::User(username=username.clone()) },
+            AppRoutes::Item { id } => view! { cx, pages::item::Item(id=*id) },
+            AppRoutes::NotFound => view! { cx, "404 Page Not Found"}
+        })
+    }
+}
+
+#[component]
+fn App<G: Html>(cx: Scope) -> View<G> {
+    view! { cx,
+        Router(
+            integration=HistoryIntegration::new(),
+            view=|cx: Scope, route: &ReadSignal<AppRoutes>| view! { cx,
                 div(class="app mb-2") {
                     components::header::Header()
                     div(class="container mx-auto") {
-                        (t)
+                        Switch(route=route)
                     }
                 }
             }
-        }))
+        )
     }
 }
 
@@ -82,9 +62,5 @@ fn main() {
 
     console_log::init().expect("error initializing logger");
 
-    sycamore::render(|| {
-        template! {
-            App()
-        }
-    });
+    sycamore::render(App);
 }

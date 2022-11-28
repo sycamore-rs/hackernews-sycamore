@@ -3,8 +3,8 @@ use web_sys::Url;
 
 use crate::apis::types::StoryItem;
 
-#[component(Story<G>)]
-pub fn story(story: StoryItem) -> Template<G> {
+#[component(inline_props)]
+pub fn Story<G: Html>(cx: Scope, story: StoryItem) -> View<G> {
     let StoryItem {
         id,
         title,
@@ -17,6 +17,7 @@ pub fn story(story: StoryItem) -> Template<G> {
         kids,
         r#type: _,
     } = story;
+    log::info!("{url:?}");
     let hostname = Url::new(url.as_deref().unwrap_or_default())
         .map(|url| {
             let mut hostname = url.hostname();
@@ -32,16 +33,16 @@ pub fn story(story: StoryItem) -> Template<G> {
     let kids_url = format!("item/{}", id);
     let kids_len = kids.len();
 
-    template! {
+    view! { cx,
         li(class="rounded border border-gray-300 p-1") {
             div {
                 a(href=url.as_deref().unwrap_or_default(), target="_blank", rel="noreferrer", class="font-semibold") {
                     (title)
                 }
                 (if let Some(hostname) = hostname.clone() {
-                    template! { span(class="text-gray-600 text-sm") { " (" (hostname) ")" } }
+                    view! { cx, span(class="text-gray-600 text-sm") { " (" (hostname) ")" } }
                 } else {
-                    template! {}
+                    view! { cx, }
                 })
             }
             div(class="text-sm text-gray-600") {
@@ -62,21 +63,19 @@ pub fn story(story: StoryItem) -> Template<G> {
     }
 }
 
-#[component(ShowStories<G>)]
-pub fn show_stories(stories: Vec<StoryItem>) -> Template<G> {
-    let list = Template::new_fragment(
-        stories
-            .into_iter()
-            .map(|item| {
-                template! {
-                    Story(item)
-                }
-            })
-            .collect(),
-    );
-    template! {
+#[component(inline_props)]
+pub fn ShowStories<G: Html>(cx: Scope, stories: Vec<StoryItem>) -> View<G> {
+    view! { cx,
         ul(class="list-none space-y-2") {
-            (list)
+            Keyed(
+                iterable=create_signal(cx, stories),
+                view=|cx, story| {
+                    view! { cx,
+                        Story(story=story)
+                    }
+                },
+                key=|story| story.id
+            )
         }
     }
 }

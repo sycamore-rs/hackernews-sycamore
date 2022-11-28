@@ -1,21 +1,21 @@
 [package]
 name = "hackernews-sycamore"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.43"
-async-recursion = "0.3.2"
-chrono = { version = "0.4.19", features = ["serde", "wasmbind"] }
-console_error_panic_hook = "0.1.6"
+anyhow = "1.0.66"
+async-recursion = "1.0.0"
+chrono = { version = "0.4.23", features = ["serde", "wasmbind"] }
+console_error_panic_hook = "0.1.7"
 console_log = "0.2.0"
-futures = "0.3.17"
-log = "0.4.14"
-reqwasm = "0.2.1"
-serde = { version = "1.0.130", features = ["derive"] }
-serde_json = "1.0.67"
-sycamore = { git = "https://github.com/sycamore-rs/sycamore", rev = "0e13c5a" }
-sycamore-router = { git = "https://github.com/sycamore-rs/sycamore", rev = "0e13c5a" }
-web-sys = { version = "0.3.53", features = ["Url"] }
+futures = "0.3.25"
+log = "0.4.17"
+gloo-net = { version = "0.2.4", features = ["http"] }
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.89"
+sycamore = { version = "0.8.2", features = ["suspense"] }
+sycamore-router = "0.8.0"
+web-sys = { version = "0.3.60", features = ["Url"] }

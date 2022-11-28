@@ -2,6 +2,6 @@
   "name": "hackernews-sycamore",
   "version": "1.0.0",
   "dependencies": {
-    "tailwindcss-cli": "^0.1.2"
+    "tailwindcss": "^3.2.4"
   }
 }
