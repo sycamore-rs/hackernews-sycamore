@@ -12,7 +12,9 @@ Requirements:
 ```sh
 git clone https://github.com/lukechu10/hackernews-sycamore
 cd hackernews-sycamore
+rustup target add wasm32-unknown-unknown
+npm install
 trunk serve --open
 ```
 
-[Live demo](https://lukechu10.github.io/hackernews-sycamore/)
+[Live demo](https://sycamore-rs.github.io/hackernews-sycamore/)
